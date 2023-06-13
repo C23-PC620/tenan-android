@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TenanAndroid</string>
+    <string name="app_name">Tenan</string>
+
+    <string name="str_explore">Explore</string>
+    <string name="str_search">Pencarian</string>
+    <string name="str_account">Akun</string>
 </resources>
