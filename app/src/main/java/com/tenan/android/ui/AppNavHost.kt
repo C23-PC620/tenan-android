@@ -1,12 +1,14 @@
 package com.tenan.android.ui
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tenan.android.ui.feature.account.AccountScreen
+import com.tenan.android.ui.feature.explore.ExploreScreen
+import com.tenan.android.ui.feature.search.SearchScreen
 
 @Composable
 fun AppNavHost(
@@ -21,15 +23,15 @@ fun AppNavHost(
     ) {
 
         composable(route = Explore.route) {
-            Text(text = "home screen")
+            ExploreScreen()
         }
 
         composable(route = Search.route) {
-            Text(text = "search screen")
+            SearchScreen()
         }
 
         composable(route = Account.route) {
-            Text(text = "account screen")
+            AccountScreen()
         }
 
     }

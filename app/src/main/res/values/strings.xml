@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Tenan</string>
 
+    <string name="str_selected_tourism_place">Tempat wisata pilihan</string>
+    <string name="str_msg_to_turn_on_location">Izinkan akses lokasi untuk melihat lokasi wisata terdekat saat ini</string>
+
     <string name="str_explore">Explore</string>
     <string name="str_search">Pencarian</string>
     <string name="str_account">Akun</string>
