@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,9 +42,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tenan.android.R
 import com.tenan.android.data.source.fake.FakeHotel
+import com.tenan.android.data.source.fake.FakeStory
 import com.tenan.android.data.source.fake.FakeTourism
 import com.tenan.android.ui.component.ItemHotelLarge
+import com.tenan.android.ui.component.ItemStory
 import com.tenan.android.ui.component.ItemTourismLarge
+import com.tenan.android.ui.theme.ForestGreen200
 import com.tenan.android.ui.theme.ForestGreen50
 import com.tenan.android.ui.theme.ForestGreen900
 import kotlinx.coroutines.launch
@@ -198,9 +203,15 @@ private fun StoryScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
-
+        items(
+            items = FakeStory.items
+        ) { story ->
+            ItemStory(
+                story = story
+            )
+        }
     }
 }
 
@@ -213,4 +224,10 @@ private fun StoryScreen(
 )
 private fun SearchResultScreenUiPreview() {
     SearchResultScreenUi()
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun StoryScreenPreview() {
+    StoryScreen()
 }
