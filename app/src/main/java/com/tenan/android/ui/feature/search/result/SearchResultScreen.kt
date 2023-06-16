@@ -1,9 +1,12 @@
 package com.tenan.android.ui.feature.search.result
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
@@ -25,10 +28,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tenan.android.R
+import com.tenan.android.data.source.fake.FakeTourism
+import com.tenan.android.ui.component.ItemTourismLarge
 import com.tenan.android.ui.theme.ForestGreen50
 import com.tenan.android.ui.theme.ForestGreen900
 
@@ -97,7 +104,7 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
                             onClick = { selectedItem = item },
                             text = {
                                 Text(
-                                    text = item.name,
+                                    text = item.asTitle(),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis)
                             },
@@ -119,13 +126,30 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun ResultTabItem.asTitle() =
+    when (this) {
+        ResultTabItem.TOURISM -> stringResource(id = R.string.str_tourism)
+        ResultTabItem.HOTEL -> stringResource(id = R.string.str_hotel)
+        ResultTabItem.STORY -> stringResource(id = R.string.str_story)
+    }
+
+@Composable
 private fun TourismScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
+        items(
+            items = FakeTourism.items,
+            key = { it.tourismId }
+        ) { tourism ->
+            ItemTourismLarge(
+                tourism = tourism
+            )
+        }
     }
 }
 

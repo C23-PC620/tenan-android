@@ -13,4 +13,7 @@
     <string name="str_recent_search">Pencarian terkini</string>
     <string name="str_other">Lainnya</string>
     <string name="str_popular_city">Kota yang populer</string>
+    <string name="str_tourism">Wisata</string>
+    <string name="str_hotel">Hotel</string>
+    <string name="str_story">Cerita</string>
 </resources>

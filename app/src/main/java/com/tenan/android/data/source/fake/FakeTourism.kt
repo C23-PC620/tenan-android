@@ -7,23 +7,23 @@ object FakeTourism {
     val items = listOf(
         Tourism(
             tourismId = 1,
-            placeName = "Atlantis Water Adventure",
-            rating = 4.6,
+            placeName = "Wisata Kuliner Pecenongan",
+            rating = 5.0,
             city = "Jakarta",
-            category = "Taman Hiburan Wisata",
+            category = "Pusat Perbelanjaan",
             longitude = 1.1,
             latitude = 1.1,
-            imageUrl = ""
+            imageUrl = "https://storage.googleapis.com/tenan-bucket/images/Wisata%20Kuliner%20Pecenongan.jpg"
         ),
         Tourism(
             tourismId = 2,
-            placeName = "Atlantis Water Adventure",
-            rating = 4.6,
+            placeName = "Wisata Alam Mangrove Angke",
+            rating = 4.3,
             city = "Jakarta",
-            category = "Budaya",
+            category = "Cagar Alam",
             longitude = 1.1,
             latitude = 1.1,
-            imageUrl = ""
+            imageUrl = "https://storage.googleapis.com/tenan-bucket/images/Wisata%20Alam%20Mangrove%20Angke.jpg"
         ),
         Tourism(
             tourismId = 3,
