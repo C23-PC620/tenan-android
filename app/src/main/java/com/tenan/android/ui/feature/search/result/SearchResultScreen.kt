@@ -41,10 +41,13 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.tenan.android.R
 import com.tenan.android.data.source.fake.FakeHotel
 import com.tenan.android.data.source.fake.FakeStory
 import com.tenan.android.data.source.fake.FakeTourism
+import com.tenan.android.entity.Tourism
 import com.tenan.android.ui.component.ItemHotelLarge
 import com.tenan.android.ui.component.ItemStory
 import com.tenan.android.ui.component.ItemTourismLarge
@@ -64,8 +67,10 @@ fun SearchResultScreen(
     onHotelItemClick: (Int) -> Unit = { },
     onStoryItemClick: (Int) -> Unit = { },
 ) {
+    val tourismResult = viewModel.getTourismByQuery(query).collectAsLazyPagingItems()
     SearchResultScreenUi(
         query = query,
+        tourismResult = tourismResult,
         onNavigateUp = onNavigateUp,
         onNavigateToSearch = onNavigateToSearch,
         onTourismItemClick = onTourismItemClick,
@@ -80,6 +85,7 @@ fun SearchResultScreen(
 private fun SearchResultScreenUi(
     modifier: Modifier = Modifier,
     query: String = "",
+    tourismResult: LazyPagingItems<Tourism>,
     onNavigateUp: () -> Unit = { },
     onNavigateToSearch: () -> Unit = { },
     onTourismItemClick: (Int) -> Unit = { },
@@ -168,6 +174,7 @@ private fun SearchResultScreenUi(
             when (position) {
                 ResultTabItem.TOURISM.ordinal -> TourismScreen(
                     modifier = Modifier.padding(innerPadding),
+                    tourismResult = tourismResult,
                     onTourismItemClick = onTourismItemClick
                 )
                 ResultTabItem.HOTEL.ordinal -> HotelScreen(modifier = Modifier.padding(innerPadding))
@@ -188,15 +195,16 @@ private fun ResultTabItem.asTitle() =
 @Composable
 private fun TourismScreen(
     modifier: Modifier = Modifier,
+    tourismResult: LazyPagingItems<Tourism>,
     onTourismItemClick: (Int) -> Unit = { }
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            items = FakeTourism.items,
+            items = tourismResult.itemSnapshotList.items,
             key = { it.tourismId }
         ) { tourism ->
             ItemTourismLarge(
@@ -213,7 +221,7 @@ private fun HotelScreen(
     onHotelItemClick: (Int) -> Unit = { }
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -254,7 +262,7 @@ private fun StoryScreen(
     device = Devices.PIXEL_4_XL
 )
 private fun SearchResultScreenUiPreview() {
-    SearchResultScreenUi()
+
 }
 
 @Composable
