@@ -1,12 +1,16 @@
 package com.tenan.android.ui.feature.search.result
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
@@ -25,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,23 +39,27 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tenan.android.R
+import com.tenan.android.data.source.fake.FakeHotel
 import com.tenan.android.data.source.fake.FakeTourism
+import com.tenan.android.ui.component.ItemHotelLarge
 import com.tenan.android.ui.component.ItemTourismLarge
 import com.tenan.android.ui.theme.ForestGreen50
 import com.tenan.android.ui.theme.ForestGreen900
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SearchResultScreen() {
     SearchResultScreenUi()
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
 
-    var selectedItem by remember { mutableStateOf(ResultTabItem.TOURISM) }
-
+    val pageState = rememberPagerState(0)
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -85,13 +94,13 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
                     )
                 )
                 TabRow(
-                    selectedTabIndex = selectedItem.ordinal,
+                    selectedTabIndex = pageState.currentPage,
                     containerColor = ForestGreen50,
                     indicator = { position ->
-                        if (selectedItem.ordinal < position.size) {
+                        if (pageState.currentPage < position.size) {
                             TabRowDefaults.Indicator(
                                 modifier = Modifier
-                                    .tabIndicatorOffset(position[selectedItem.ordinal]),
+                                    .tabIndicatorOffset(position[pageState.currentPage]),
                                 color = ForestGreen900
                             )
                         }
@@ -100,8 +109,12 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
                 ) {
                     ResultTabItem.values().forEachIndexed { index, item ->
                         Tab(
-                            selected = selectedItem.ordinal == index,
-                            onClick = { selectedItem = item },
+                            selected = pageState.currentPage == index,
+                            onClick = {
+                                scope.launch {
+                                    pageState.animateScrollToPage(index)
+                                }
+                            },
                             text = {
                                 Text(
                                     text = item.asTitle(),
@@ -117,10 +130,17 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
             }
         }
     ) { innerPadding ->
-        when (selectedItem) {
-            ResultTabItem.TOURISM -> TourismScreen(modifier = Modifier.padding(innerPadding))
-            ResultTabItem.HOTEL -> HotelScreen(modifier = Modifier.padding(innerPadding))
-            ResultTabItem.STORY -> StoryScreen(modifier = Modifier.padding(innerPadding))
+        HorizontalPager(
+            pageCount = 3,
+            modifier = Modifier.fillMaxSize(),
+            state = pageState,
+            beyondBoundsPageCount = 1
+        ) { position ->
+            when (position) {
+                ResultTabItem.TOURISM.ordinal -> TourismScreen(modifier = Modifier.padding(innerPadding))
+                ResultTabItem.HOTEL.ordinal -> HotelScreen(modifier = Modifier.padding(innerPadding))
+                ResultTabItem.STORY.ordinal -> StoryScreen(modifier = Modifier.padding(innerPadding))
+            }
         }
     }
 }
@@ -158,9 +178,18 @@ private fun HotelScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
+        items(
+            items = FakeHotel.items,
+            key = { it.lodgingId }
+        ) { hotel ->
+            ItemHotelLarge(
+                hotel = hotel
+            )
+        }
     }
 }
 
@@ -175,7 +204,7 @@ private fun StoryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 @Preview(
     showSystemUi = true,
