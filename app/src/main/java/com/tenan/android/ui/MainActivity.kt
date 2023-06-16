@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tenan.android.ui.theme.EarthyBrown100
+import com.tenan.android.ui.theme.ForestGreen100
 import com.tenan.android.ui.theme.TenanAndroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -80,7 +83,10 @@ private fun AppBottomNavigation(
                     Text(
                         text = stringResource(id = item.title!!)
                     )
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = ForestGreen100
+                )
             )
         }
     }

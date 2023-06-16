@@ -16,15 +16,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = ForestGreen800,
+    secondary = EarthyBrown600,
+    tertiary = EarthyBrown500
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = ForestGreen800,
+    secondary = EarthyBrown600,
+    tertiary = EarthyBrown200
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -47,7 +47,7 @@ fun TenanAndroidTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            dynamicLightColorScheme(context)
         }
 
         darkTheme -> DarkColorScheme
@@ -63,7 +63,7 @@ fun TenanAndroidTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography,
         content = content
     )
