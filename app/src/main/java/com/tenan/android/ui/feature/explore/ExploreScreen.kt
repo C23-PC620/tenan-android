@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -20,12 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -35,23 +34,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import com.tenan.android.R
 import com.tenan.android.data.source.fake.FakeTourism
 import com.tenan.android.entity.Tourism
-import com.tenan.android.ui.LoadState
+import com.tenan.android.ui.UiLoadState
 import com.tenan.android.ui.component.ItemTourismSmall
 
 @Composable
-fun ExploreScreen() {
+fun ExploreScreen(
+    viewModel: ExploreViewModel = hiltViewModel(),
+) {
+    val selectedTourismState by viewModel.recommendedTourismUiState.observeAsState(UiLoadState.Loading())
     ExploreScreenUi(
-        selectedTourismState = LoadState.Available(FakeTourism.items)
+        selectedTourismState = selectedTourismState
     )
 }
 
 @Composable
 private fun ExploreScreenUi(
     modifier: Modifier = Modifier,
-    selectedTourismState: LoadState<List<Tourism>>
+    selectedTourismState: UiLoadState<List<Tourism>>
 ) {
     LazyColumn(
         modifier = modifier,
@@ -68,10 +72,10 @@ private fun ExploreScreenUi(
             )
         }
         when (selectedTourismState) {
-            is LoadState.Loading -> Unit
-            is LoadState.Empty -> Unit
-            is LoadState.Failed -> Unit
-            is LoadState.Available -> {
+            is UiLoadState.Loading -> Unit
+            is UiLoadState.Empty -> Unit
+            is UiLoadState.Failed -> Unit
+            is UiLoadState.Available -> {
                 item {
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -102,10 +106,10 @@ private fun ExploreScreenUi(
             )
         }
         when (selectedTourismState) {
-            is LoadState.Loading -> Unit
-            is LoadState.Empty -> Unit
-            is LoadState.Failed -> Unit
-            is LoadState.Available -> {
+            is UiLoadState.Loading -> Unit
+            is UiLoadState.Empty -> Unit
+            is UiLoadState.Failed -> Unit
+            is UiLoadState.Available -> {
                 item {
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -181,7 +185,7 @@ private fun ExploreBanner(
 @Preview(showBackground = true)
 private fun ExploreScreenUiPreview() {
     ExploreScreenUi(
-        selectedTourismState = LoadState.Available(FakeTourism.items)
+        selectedTourismState = UiLoadState.Available(FakeTourism.items)
     )
 }
 

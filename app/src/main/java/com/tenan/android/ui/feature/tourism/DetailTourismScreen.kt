@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Category
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.tenan.android.data.source.fake.FakeTourism
 import com.tenan.android.entity.Tourism
-import com.tenan.android.ui.LoadState
+import com.tenan.android.ui.UiLoadState
 import com.tenan.android.ui.component.ItemTourismCategory
 import com.tenan.android.ui.theme.EarthyBrown50
 import com.tenan.android.ui.theme.ForestGreen200
@@ -54,7 +52,7 @@ fun DetailTourismScreen(
     onNavigateUp: () -> Unit = { }
 ) {
     DetailTourismUi(
-        detailTourismLoadState = LoadState.Available(FakeTourism.items.first()),
+        detailTourismUiLoadState = UiLoadState.Available(FakeTourism.items.first()),
         onNavigateUp = onNavigateUp
     )
 }
@@ -62,21 +60,21 @@ fun DetailTourismScreen(
 @ExperimentalMaterial3Api
 @Composable
 private fun DetailTourismUi(
-    detailTourismLoadState: LoadState<Tourism>,
+    detailTourismUiLoadState: UiLoadState<Tourism>,
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit = { }
 ) {
-    when (detailTourismLoadState) {
-        is LoadState.Available -> {
+    when (detailTourismUiLoadState) {
+        is UiLoadState.Available -> {
             AvailableDataContent(
-                data = detailTourismLoadState.data,
+                data = detailTourismUiLoadState.data,
                 modifier = modifier,
                 onNavigateUp = onNavigateUp
             )
         }
-        is LoadState.Empty -> Unit
-        is LoadState.Failed -> Unit
-        is LoadState.Loading -> Unit
+        is UiLoadState.Empty -> Unit
+        is UiLoadState.Failed -> Unit
+        is UiLoadState.Loading -> Unit
     }
 }
 
@@ -227,5 +225,5 @@ private fun DescriptionSection(
     device = Devices.PIXEL_4_XL
 )
 private fun DetailTourismUiPreview() {
-    DetailTourismUi(detailTourismLoadState = LoadState.Available(FakeTourism.items.first()))
+    DetailTourismUi(detailTourismUiLoadState = UiLoadState.Available(FakeTourism.items.first()))
 }

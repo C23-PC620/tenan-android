@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,6 +41,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import com.tenan.android.data.source.fake.FakeTourism
 import com.tenan.android.entity.Tourism
 import com.tenan.android.ui.theme.EarthyBrown100
@@ -63,16 +66,31 @@ fun ItemTourismSmall(
         Column(
             modifier = Modifier.clickable { onItemClick() }
         ) {
-            Box(
+            SubcomposeAsyncImage(
+                model = tourism.imageUrl,
+                contentDescription = null,
                 modifier = Modifier
                     .width(200.dp)
                     .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(EarthyBrown50),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Image will appear here!")
-            }
+                    .clip(RoundedCornerShape(16.dp)),
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(EarthyBrown50),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "Loading image")
+                    }
+                },
+                success = { state ->
+                    SubcomposeAsyncImageContent(
+                        painter = state.painter
+                    )
+                },
+                contentScale = ContentScale.Crop
+            )
             Column(
                 modifier = Modifier.padding(
                     start = 16.dp,

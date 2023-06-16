@@ -3,11 +3,13 @@ package com.tenan.android.data.source.remote
 import com.tenan.android.entity.Coordinate
 import com.tenan.android.entity.Hotel
 import com.tenan.android.entity.Tourism
+import com.tenan.android.entity.request.RecommendedTourismRequest
 import com.tenan.android.entity.response.PagingResponse
 import com.tenan.android.entity.response.ServerResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -31,9 +33,9 @@ interface TourismService {
         @Header("Authorization") token: String
     ): ServerResponse<Tourism>
 
-    @GET("tourisms/recommendedTourisms")
+    @POST("tourisms/recommendedTourisms")
     suspend fun getRecommendedTourism(
-        @Query("city") city: String
+        @Body request: RecommendedTourismRequest
     ): ServerResponse<List<Tourism>>
 
     @GET("tourisms/recommendedHotels")

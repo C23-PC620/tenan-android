@@ -1,23 +1,19 @@
 package com.tenan.android.ui.feature.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,8 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
@@ -50,7 +43,7 @@ import com.tenan.android.R
 import com.tenan.android.data.source.fake.FakeCity
 import com.tenan.android.data.source.fake.FakeRecentSearch
 import com.tenan.android.entity.City
-import com.tenan.android.ui.LoadState
+import com.tenan.android.ui.UiLoadState
 import com.tenan.android.ui.component.ItemRecentSearch
 import com.tenan.android.ui.component.ItemTourismCity
 import com.tenan.android.ui.theme.ForestGreen50
@@ -105,12 +98,12 @@ private fun SearchScreenUi(
         }
         item {
             RecentSearchesSection(
-                recentSearchLoadState = LoadState.Available(FakeRecentSearch.items)
+                recentSearchUiLoadState = UiLoadState.Available(FakeRecentSearch.items)
             )
         }
         item {
             TourismCitySection(
-                tourismCityLoadState = LoadState.Available(FakeCity.items)
+                tourismCityUiLoadState = UiLoadState.Available(FakeCity.items)
             )
         }
     }
@@ -161,7 +154,7 @@ private fun SearchTextField(
 @Composable
 private fun RecentSearchesSection(
     modifier: Modifier = Modifier,
-    recentSearchLoadState: LoadState<List<String>>
+    recentSearchUiLoadState: UiLoadState<List<String>>
 ) {
     Column(
         modifier = modifier,
@@ -172,8 +165,8 @@ private fun RecentSearchesSection(
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(0.dp))
-        when (recentSearchLoadState) {
-            is LoadState.Available -> {
+        when (recentSearchUiLoadState) {
+            is UiLoadState.Available -> {
                 LazyHorizontalStaggeredGrid(
                     rows = StaggeredGridCells.Fixed(count = 3),
                     modifier = Modifier
@@ -183,7 +176,7 @@ private fun RecentSearchesSection(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     userScrollEnabled = false
                 ) {
-                    items(recentSearchLoadState.data) { query ->
+                    items(recentSearchUiLoadState.data) { query ->
                         ItemRecentSearch(
                             text = query,
                             onItemClicked = { }
@@ -191,9 +184,9 @@ private fun RecentSearchesSection(
                     }
                 }
             }
-            is LoadState.Empty -> Unit
-            is LoadState.Failed -> Unit
-            is LoadState.Loading -> Unit
+            is UiLoadState.Empty -> Unit
+            is UiLoadState.Failed -> Unit
+            is UiLoadState.Loading -> Unit
         }
         Button(
             onClick = { },
@@ -213,7 +206,7 @@ private fun RecentSearchesSection(
 @Composable
 private fun TourismCitySection(
     modifier: Modifier = Modifier,
-    tourismCityLoadState: LoadState<List<City>>
+    tourismCityUiLoadState: UiLoadState<List<City>>
 ) {
     Column(
         modifier = modifier,
@@ -224,8 +217,8 @@ private fun TourismCitySection(
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(0.dp))
-        when (tourismCityLoadState) {
-            is LoadState.Available -> {
+        when (tourismCityUiLoadState) {
+            is UiLoadState.Available -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
                     modifier = Modifier
@@ -235,7 +228,7 @@ private fun TourismCitySection(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     userScrollEnabled = false
                 ) {
-                    items(tourismCityLoadState.data) { city ->
+                    items(tourismCityUiLoadState.data) { city ->
                         ItemTourismCity(
                             cityName = city.name,
                             cityImageId = city.image
@@ -243,9 +236,9 @@ private fun TourismCitySection(
                     }
                 }
             }
-            is LoadState.Empty -> Unit
-            is LoadState.Failed -> Unit
-            is LoadState.Loading -> Unit
+            is UiLoadState.Empty -> Unit
+            is UiLoadState.Failed -> Unit
+            is UiLoadState.Loading -> Unit
         }
     }
 }
@@ -278,7 +271,7 @@ private fun SearchTextFieldPreview() {
 @Preview
 private fun RecentSearchesSectionPreview() {
     RecentSearchesSection(
-        recentSearchLoadState = LoadState.Available(FakeRecentSearch.items)
+        recentSearchUiLoadState = UiLoadState.Available(FakeRecentSearch.items)
     )
 }
 
@@ -286,6 +279,6 @@ private fun RecentSearchesSectionPreview() {
 @Preview
 private fun TourismCitySectionPreview() {
     TourismCitySection(
-        tourismCityLoadState = LoadState.Available(FakeCity.items)
+        tourismCityUiLoadState = UiLoadState.Available(FakeCity.items)
     )
 }

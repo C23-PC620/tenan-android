@@ -22,7 +22,9 @@ import androidx.navigation.compose.rememberNavController
 import com.tenan.android.ui.theme.EarthyBrown100
 import com.tenan.android.ui.theme.ForestGreen100
 import com.tenan.android.ui.theme.TenanAndroidTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
