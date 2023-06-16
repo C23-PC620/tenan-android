@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.tenan.android.ui.feature.account.AccountScreen
 import com.tenan.android.ui.feature.explore.ExploreScreen
 import com.tenan.android.ui.feature.search.SearchScreen
+import com.tenan.android.ui.feature.search.result.SearchResultScreen
 
 @Composable
 fun AppNavHost(
@@ -27,11 +28,19 @@ fun AppNavHost(
         }
 
         composable(route = Search.route) {
-            SearchScreen()
+            SearchScreen(
+                onNavigateToResult = {
+                    navController.navigate(SearchResult.route)
+                }
+            )
         }
 
         composable(route = Account.route) {
             AccountScreen()
+        }
+
+        composable(route = SearchResult.route) {
+            SearchResultScreen()
         }
 
     }

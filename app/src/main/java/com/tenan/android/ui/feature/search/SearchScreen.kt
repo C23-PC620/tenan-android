@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Button
@@ -32,10 +34,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,17 +56,26 @@ import com.tenan.android.ui.component.ItemTourismCity
 import com.tenan.android.ui.theme.ForestGreen50
 import com.tenan.android.ui.theme.ForestGreen800
 import com.tenan.android.ui.theme.ForestGreen900
-import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen() {
-    SearchScreenUi()
+fun SearchScreen(
+    onNavigateToResult: () -> Unit
+) {
+    SearchScreenUi(
+        onSearchAction = onNavigateToResult
+    )
 }
 
 @ExperimentalMaterial3Api
 @Composable
-private fun SearchScreenUi(modifier: Modifier = Modifier) {
+private fun SearchScreenUi(
+    modifier: Modifier = Modifier,
+    onSearchAction: () -> Unit
+) {
+
+    var query by remember { mutableStateOf("") }
+
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
@@ -81,8 +97,9 @@ private fun SearchScreenUi(modifier: Modifier = Modifier) {
         }
         item {
             SearchTextField(
-                text = "",
-                onTextChanged = { },
+                text = query,
+                onTextChanged = { query = it },
+                onSearchAction = onSearchAction,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -103,6 +120,7 @@ private fun SearchScreenUi(modifier: Modifier = Modifier) {
 private fun SearchTextField(
     text: String,
     onTextChanged: (String) -> Unit,
+    onSearchAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -128,6 +146,12 @@ private fun SearchTextField(
             unfocusedContainerColor = ForestGreen50,
             focusedBorderColor = ForestGreen50,
             unfocusedBorderColor = ForestGreen50
+        ),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = { onSearchAction() }
         )
     )
 }
@@ -234,7 +258,9 @@ private fun TourismCitySection(
     device = Devices.PIXEL_4_XL
 )
 private fun SearchScreenUiPreview() {
-    SearchScreenUi()
+    SearchScreenUi(
+        onSearchAction = { }
+    )
 }
 
 @Composable
@@ -242,7 +268,9 @@ private fun SearchScreenUiPreview() {
 private fun SearchTextFieldPreview() {
     SearchTextField(
         text = "",
-        onTextChanged = {})
+        onTextChanged = {},
+        onSearchAction = { }
+    )
 }
 
 @ExperimentalMaterial3Api
