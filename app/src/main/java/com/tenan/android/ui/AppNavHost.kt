@@ -48,13 +48,17 @@ fun AppNavHost(
                 query = navBackStack.arguments?.getString(SearchResult.query) ?: "",
                 onNavigateUp = navController::navigateUp,
                 onTourismItemClick = {
-                    navController.navigate(DetailTourism.route)
+                    navController.navigate(DetailTourism.buildRouteWithArgs(it))
                 }
             )
         }
 
-        composable(route = DetailTourism.route) {
+        composable(
+            route = DetailTourism.routeWithArgs,
+            arguments = DetailTourism.arguments
+        ) { navBackStack ->
             DetailTourismScreen(
+                tourismId = navBackStack.arguments?.getInt(DetailTourism.tourismId) ?: 0,
                 onNavigateUp = navController::navigateUp
             )
         }

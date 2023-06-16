@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.tenan.android.R
+import com.tenan.android.ui.SearchResult.query
 
 interface AppDestination {
     val icon: ImageVector?
@@ -52,6 +53,15 @@ object DetailTourism : AppDestination {
     override val icon: Nothing? = null
     override val title: Nothing? = null
     override val route = "tourism/detail"
+    const val tourismId = "tourism_id"
+    val routeWithArgs = "$route/{$tourismId}"
+    val arguments = listOf(
+        navArgument(tourismId) { type = NavType.IntType }
+    )
+
+    fun buildRouteWithArgs(
+        tourismId: Int
+    ) = "$route/$tourismId"
 }
 
 val topLevelDestinations = listOf(Explore, Search, Account)

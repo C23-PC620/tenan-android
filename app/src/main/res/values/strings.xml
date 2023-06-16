@@ -16,4 +16,5 @@
     <string name="str_tourism">Wisata</string>
     <string name="str_hotel">Hotel</string>
     <string name="str_story">Cerita</string>
+    <string name="str_favorite_tourism_place">Tempat wisata favorit</string>
 </resources>

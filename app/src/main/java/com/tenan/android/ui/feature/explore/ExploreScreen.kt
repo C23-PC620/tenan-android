@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -62,7 +63,15 @@ private fun ExploreScreenUi(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            Spacer(modifier = Modifier.height(0.dp))
+            Image(
+                painter = painterResource(id = R.drawable.tenan_logo),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(96.dp)
+                    .wrapContentWidth()
+                    .padding(16.dp),
+                contentScale = ContentScale.FillHeight
+            )
         }
         item {
             Text(
@@ -100,7 +109,7 @@ private fun ExploreScreenUi(
         }
         item {
             Text(
-                text = stringResource(id = R.string.str_selected_tourism_place),
+                text = stringResource(id = R.string.str_favorite_tourism_place),
                 modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.titleMedium
             )

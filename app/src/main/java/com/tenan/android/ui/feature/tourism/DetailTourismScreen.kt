@@ -28,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.tenan.android.data.source.fake.FakeTourism
@@ -49,10 +52,14 @@ import com.tenan.android.ui.theme.ForestGreen900
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailTourismScreen(
+    viewModel: DetailTourismViewModel = hiltViewModel(),
+    tourismId: Int,
     onNavigateUp: () -> Unit = { }
 ) {
+    viewModel.getTourismById(tourismId)
+    val detailTourismLoadState by viewModel.tourismUiState.observeAsState(initial = UiLoadState.Loading())
     DetailTourismUi(
-        detailTourismUiLoadState = UiLoadState.Available(FakeTourism.items.first()),
+        detailTourismUiLoadState = detailTourismLoadState,
         onNavigateUp = onNavigateUp
     )
 }
@@ -212,7 +219,9 @@ private fun DescriptionSection(
 ) {
     Text(
         text = description,
-        modifier = modifier.padding(16.dp).fillMaxWidth(),
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         style = MaterialTheme.typography.bodyMedium
     )
 }
