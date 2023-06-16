@@ -5,6 +5,8 @@ import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.tenan.android.R
 
 interface AppDestination {
@@ -35,6 +37,15 @@ object SearchResult : AppDestination {
     override val icon: Nothing? = null
     override val title: Nothing? = null
     override val route = "search/result"
+    const val query = "query"
+    val routeWithArgs = "$route/{$query}"
+    val arguments = listOf(
+        navArgument(query) { type = NavType.StringType },
+    )
+
+    fun buildRouteWithArgs(
+        query: String
+    ) = "$route/$query"
 }
 
 object DetailTourism : AppDestination {

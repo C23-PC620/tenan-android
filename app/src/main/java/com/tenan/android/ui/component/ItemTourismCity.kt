@@ -2,6 +2,7 @@ package com.tenan.android.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -42,7 +43,9 @@ fun ItemTourismCity(
         shape = RoundedCornerShape(8.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable { onItemClick() }
         ) {
             val contrast = 1f // 0f..10f (1 should be default)
             val brightness = -95f // -255f..255f (0 should be default)

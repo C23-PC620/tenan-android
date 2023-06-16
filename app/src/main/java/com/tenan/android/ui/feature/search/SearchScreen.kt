@@ -53,10 +53,10 @@ import com.tenan.android.ui.theme.ForestGreen900
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onNavigateToResult: () -> Unit
+    onNavigateToResult: (query: String) -> Unit,
 ) {
     SearchScreenUi(
-        onSearchAction = onNavigateToResult
+        onSearchAction = { onNavigateToResult(it) }
     )
 }
 
@@ -64,7 +64,7 @@ fun SearchScreen(
 @Composable
 private fun SearchScreenUi(
     modifier: Modifier = Modifier,
-    onSearchAction: () -> Unit
+    onSearchAction: (String) -> Unit
 ) {
 
     var query by remember { mutableStateOf("") }
@@ -92,18 +92,20 @@ private fun SearchScreenUi(
             SearchTextField(
                 text = query,
                 onTextChanged = { query = it },
-                onSearchAction = onSearchAction,
+                onSearchAction = { onSearchAction(query) },
                 modifier = Modifier.fillMaxWidth()
             )
         }
         item {
             RecentSearchesSection(
-                recentSearchUiLoadState = UiLoadState.Available(FakeRecentSearch.items)
+                recentSearchUiLoadState = UiLoadState.Available(FakeRecentSearch.items),
+                onClickRecentItem = onSearchAction
             )
         }
         item {
             TourismCitySection(
-                tourismCityUiLoadState = UiLoadState.Available(FakeCity.items)
+                tourismCityUiLoadState = UiLoadState.Available(FakeCity.items),
+                onClickCityItem = onSearchAction
             )
         }
     }
@@ -154,7 +156,8 @@ private fun SearchTextField(
 @Composable
 private fun RecentSearchesSection(
     modifier: Modifier = Modifier,
-    recentSearchUiLoadState: UiLoadState<List<String>>
+    recentSearchUiLoadState: UiLoadState<List<String>>,
+    onClickRecentItem: (String) -> Unit = { }
 ) {
     Column(
         modifier = modifier,
@@ -179,7 +182,7 @@ private fun RecentSearchesSection(
                     items(recentSearchUiLoadState.data) { query ->
                         ItemRecentSearch(
                             text = query,
-                            onItemClicked = { }
+                            onItemClicked = { onClickRecentItem(query) }
                         )
                     }
                 }
@@ -206,7 +209,8 @@ private fun RecentSearchesSection(
 @Composable
 private fun TourismCitySection(
     modifier: Modifier = Modifier,
-    tourismCityUiLoadState: UiLoadState<List<City>>
+    tourismCityUiLoadState: UiLoadState<List<City>>,
+    onClickCityItem: (name: String) -> Unit = { }
 ) {
     Column(
         modifier = modifier,
@@ -231,7 +235,8 @@ private fun TourismCitySection(
                     items(tourismCityUiLoadState.data) { city ->
                         ItemTourismCity(
                             cityName = city.name,
-                            cityImageId = city.image
+                            cityImageId = city.image,
+                            onItemClick = { onClickCityItem(city.name) }
                         )
                     }
                 }

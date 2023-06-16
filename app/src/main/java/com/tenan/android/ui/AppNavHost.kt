@@ -31,7 +31,7 @@ fun AppNavHost(
         composable(route = Search.route) {
             SearchScreen(
                 onNavigateToResult = {
-                    navController.navigate(SearchResult.route)
+                    navController.navigate(route = SearchResult.buildRouteWithArgs(it))
                 }
             )
         }
@@ -40,8 +40,12 @@ fun AppNavHost(
             AccountScreen()
         }
 
-        composable(route = SearchResult.route) {
+        composable(
+            route = SearchResult.routeWithArgs,
+            arguments = SearchResult.arguments
+        ) { navBackStack ->
             SearchResultScreen(
+                query = navBackStack.arguments?.getString(SearchResult.query) ?: "",
                 onNavigateUp = navController::navigateUp,
                 onTourismItemClick = {
                     navController.navigate(DetailTourism.route)

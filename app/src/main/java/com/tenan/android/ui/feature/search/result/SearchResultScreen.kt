@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tenan.android.R
 import com.tenan.android.data.source.fake.FakeHotel
 import com.tenan.android.data.source.fake.FakeStory
@@ -55,13 +56,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SearchResultScreen(
+    viewModel: SearchResultViewModel = hiltViewModel(),
+    query : String,
     onNavigateUp: () -> Unit = { },
     onNavigateToSearch: () -> Unit = { },
     onTourismItemClick: (Int) -> Unit = { },
     onHotelItemClick: (Int) -> Unit = { },
-    onStoryItemClick: (Int) -> Unit = { }
+    onStoryItemClick: (Int) -> Unit = { },
 ) {
     SearchResultScreenUi(
+        query = query,
         onNavigateUp = onNavigateUp,
         onNavigateToSearch = onNavigateToSearch,
         onTourismItemClick = onTourismItemClick,
@@ -75,6 +79,7 @@ fun SearchResultScreen(
 @Composable
 private fun SearchResultScreenUi(
     modifier: Modifier = Modifier,
+    query: String = "",
     onNavigateUp: () -> Unit = { },
     onNavigateToSearch: () -> Unit = { },
     onTourismItemClick: (Int) -> Unit = { },
@@ -92,7 +97,7 @@ private fun SearchResultScreenUi(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Jakarta",
+                            text = query,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
