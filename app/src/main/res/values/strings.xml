@@ -7,4 +7,9 @@
     <string name="str_explore">Explore</string>
     <string name="str_search">Pencarian</string>
     <string name="str_account">Akun</string>
+    <string name="str_searching">Pencarian</string>
+    <string name="str_searching_message">Masukkan nama lokasi wisata atau nama daerah untuk menemukan lokasi wisata</string>
+    <string name="str_msg_search_hint">Cari nama atau lokasi wisata disini...</string>
+    <string name="str_recent_search">Pencarian terkini</string>
+    <string name="str_other">Lainnya</string>
 </resources>
