@@ -54,14 +54,33 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun SearchResultScreen() {
-    SearchResultScreenUi()
+fun SearchResultScreen(
+    onNavigateUp: () -> Unit = { },
+    onNavigateToSearch: () -> Unit = { },
+    onTourismItemClick: (Int) -> Unit = { },
+    onHotelItemClick: (Int) -> Unit = { },
+    onStoryItemClick: (Int) -> Unit = { }
+) {
+    SearchResultScreenUi(
+        onNavigateUp = onNavigateUp,
+        onNavigateToSearch = onNavigateToSearch,
+        onTourismItemClick = onTourismItemClick,
+        onHotelItemClick = onHotelItemClick,
+        onStoryItemClick = onStoryItemClick
+    )
 }
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
+private fun SearchResultScreenUi(
+    modifier: Modifier = Modifier,
+    onNavigateUp: () -> Unit = { },
+    onNavigateToSearch: () -> Unit = { },
+    onTourismItemClick: (Int) -> Unit = { },
+    onHotelItemClick: (Int) -> Unit = { },
+    onStoryItemClick: (Int) -> Unit = { }
+) {
 
     val pageState = rememberPagerState(0)
     val scope = rememberCoroutineScope()
@@ -79,7 +98,7 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { }) {
+                        IconButton(onClick = onNavigateUp) {
                             Icon(
                                 imageVector = Icons.Rounded.ArrowBack,
                                 contentDescription = null
@@ -87,7 +106,7 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
                         }
                     },
                     actions = {
-                        IconButton(onClick = { }) {
+                        IconButton(onClick = onNavigateToSearch) {
                             Icon(
                                 imageVector = Icons.Rounded.Search,
                                 contentDescription = null
@@ -142,7 +161,10 @@ private fun SearchResultScreenUi(modifier: Modifier = Modifier) {
             beyondBoundsPageCount = 1
         ) { position ->
             when (position) {
-                ResultTabItem.TOURISM.ordinal -> TourismScreen(modifier = Modifier.padding(innerPadding))
+                ResultTabItem.TOURISM.ordinal -> TourismScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onTourismItemClick = onTourismItemClick
+                )
                 ResultTabItem.HOTEL.ordinal -> HotelScreen(modifier = Modifier.padding(innerPadding))
                 ResultTabItem.STORY.ordinal -> StoryScreen(modifier = Modifier.padding(innerPadding))
             }
@@ -160,7 +182,8 @@ private fun ResultTabItem.asTitle() =
 
 @Composable
 private fun TourismScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTourismItemClick: (Int) -> Unit = { }
 ) {
     LazyColumn(
         modifier = modifier,
@@ -172,7 +195,8 @@ private fun TourismScreen(
             key = { it.tourismId }
         ) { tourism ->
             ItemTourismLarge(
-                tourism = tourism
+                tourism = tourism,
+                onItemClick = { onTourismItemClick(tourism.tourismId) }
             )
         }
     }
@@ -180,7 +204,8 @@ private fun TourismScreen(
 
 @Composable
 private fun HotelScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onHotelItemClick: (Int) -> Unit = { }
 ) {
     LazyColumn(
         modifier = modifier,
@@ -200,7 +225,8 @@ private fun HotelScreen(
 
 @Composable
 private fun StoryScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStoryItemClick: (Int) -> Unit = { }
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()

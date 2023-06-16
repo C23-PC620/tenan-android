@@ -10,6 +10,7 @@ import com.tenan.android.ui.feature.account.AccountScreen
 import com.tenan.android.ui.feature.explore.ExploreScreen
 import com.tenan.android.ui.feature.search.SearchScreen
 import com.tenan.android.ui.feature.search.result.SearchResultScreen
+import com.tenan.android.ui.feature.tourism.DetailTourismScreen
 
 @Composable
 fun AppNavHost(
@@ -40,7 +41,18 @@ fun AppNavHost(
         }
 
         composable(route = SearchResult.route) {
-            SearchResultScreen()
+            SearchResultScreen(
+                onNavigateUp = navController::navigateUp,
+                onTourismItemClick = {
+                    navController.navigate(DetailTourism.route)
+                }
+            )
+        }
+
+        composable(route = DetailTourism.route) {
+            DetailTourismScreen(
+                onNavigateUp = navController::navigateUp
+            )
         }
 
     }

@@ -35,7 +35,12 @@ object SearchResult : AppDestination {
     override val icon: Nothing? = null
     override val title: Nothing? = null
     override val route = "search/result"
+}
 
+object DetailTourism : AppDestination {
+    override val icon: Nothing? = null
+    override val title: Nothing? = null
+    override val route = "tourism/detail"
 }
 
 val topLevelDestinations = listOf(Explore, Search, Account)

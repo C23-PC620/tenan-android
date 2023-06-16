@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 data class Tourism(
     @SerialName("tourism_id") val tourismId: Int,
     @SerialName("place_name") val placeName: String,
+    @SerialName("description") val description: String? = null,
     @SerialName("rating") val rating: Double,
     @SerialName("city") val city: String,
     @SerialName("category") val category: String,
