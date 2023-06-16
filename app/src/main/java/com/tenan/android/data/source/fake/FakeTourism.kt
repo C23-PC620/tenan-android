@@ -10,7 +10,7 @@ object FakeTourism {
             placeName = "Atlantis Water Adventure",
             rating = 4.6,
             city = "Jakarta",
-            category = "Budaya",
+            category = "Taman Hiburan Wisata",
             longitude = 1.1,
             latitude = 1.1,
             imageUrl = ""

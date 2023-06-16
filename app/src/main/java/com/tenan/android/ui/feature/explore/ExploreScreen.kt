@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,8 +57,12 @@ private fun ExploreScreenUi(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
+            Spacer(modifier = Modifier.height(0.dp))
+        }
+        item {
             Text(
                 text = stringResource(id = R.string.str_selected_tourism_place),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -83,11 +89,14 @@ private fun ExploreScreenUi(
             }
         }
         item {
-            ExploreBanner()
+            ExploreBanner(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
         }
         item {
             Text(
                 text = stringResource(id = R.string.str_selected_tourism_place),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -98,7 +107,7 @@ private fun ExploreScreenUi(
             is LoadState.Available -> {
                 item {
                     LazyRow(
-                        contentPadding = PaddingValues(end = 16.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(
@@ -112,6 +121,9 @@ private fun ExploreScreenUi(
                     }
                 }
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(0.dp))
         }
     }
 }
@@ -142,7 +154,9 @@ private fun ExploreBanner(
             colorFilter = ColorFilter.colorMatrix(ColorMatrix(colorMatrix))
         )
         Row(
-            modifier = Modifier.align(Alignment.Center).padding(horizontal = 16.dp),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

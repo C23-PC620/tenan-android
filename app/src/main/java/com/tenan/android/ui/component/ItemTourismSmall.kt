@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Category
@@ -53,8 +55,8 @@ fun ItemTourismSmall(
 ) {
     Card(
         modifier = modifier
-            .width(180.dp)
-            .height(260.dp),
+            .width(200.dp)
+            .wrapContentHeight(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = ForestGreen100)
     ) {
@@ -63,8 +65,8 @@ fun ItemTourismSmall(
         ) {
             Box(
                 modifier = Modifier
-                    .width(180.dp)
-                    .height(120.dp)
+                    .width(200.dp)
+                    .height(140.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(EarthyBrown50),
                 contentAlignment = Alignment.Center
@@ -72,15 +74,16 @@ fun ItemTourismSmall(
                 Text(text = "Image will appear here!")
             }
             Column(
-                modifier.padding(
+                modifier = Modifier.padding(
                     start = 16.dp,
                     end = 16.dp,
                     bottom = 16.dp
                 )
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier.wrapContentHeight(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     ItemTourismCategory(
                         icon = Icons.Rounded.Category,
@@ -95,7 +98,7 @@ fun ItemTourismSmall(
                 Text(
                     text = tourism.placeName,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
+                    maxLines = 1,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
@@ -138,6 +141,8 @@ private fun ItemTourismCategory(
         Text(
             text = text,
             color = EarthyBrown500,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             style = MaterialTheme.typography.labelLarge
         )
     }
