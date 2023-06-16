@@ -40,17 +40,21 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tenan.android.R
+import com.tenan.android.data.source.fake.FakeCity
 import com.tenan.android.data.source.fake.FakeRecentSearch
+import com.tenan.android.entity.City
 import com.tenan.android.ui.LoadState
 import com.tenan.android.ui.component.ItemRecentSearch
+import com.tenan.android.ui.component.ItemTourismCity
 import com.tenan.android.ui.theme.ForestGreen50
 import com.tenan.android.ui.theme.ForestGreen800
 import com.tenan.android.ui.theme.ForestGreen900
 import kotlin.math.max
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen() {
-
+    SearchScreenUi()
 }
 
 @ExperimentalMaterial3Api
@@ -85,6 +89,11 @@ private fun SearchScreenUi(modifier: Modifier = Modifier) {
         item {
             RecentSearchesSection(
                 recentSearchLoadState = LoadState.Available(FakeRecentSearch.items)
+            )
+        }
+        item {
+            TourismCitySection(
+                tourismCityLoadState = LoadState.Available(FakeCity.items)
             )
         }
     }
@@ -177,6 +186,46 @@ private fun RecentSearchesSection(
     }
 }
 
+@Composable
+private fun TourismCitySection(
+    modifier: Modifier = Modifier,
+    tourismCityLoadState: LoadState<List<City>>
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.str_popular_city),
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(0.dp))
+        when (tourismCityLoadState) {
+            is LoadState.Available -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = 2),
+                    modifier = Modifier
+                        .height(320.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    userScrollEnabled = false
+                ) {
+                    items(tourismCityLoadState.data) { city ->
+                        ItemTourismCity(
+                            cityName = city.name,
+                            cityImageId = city.image
+                        )
+                    }
+                }
+            }
+            is LoadState.Empty -> Unit
+            is LoadState.Failed -> Unit
+            is LoadState.Loading -> Unit
+        }
+    }
+}
+
 @ExperimentalMaterial3Api
 @Composable
 @Preview(
@@ -202,5 +251,13 @@ private fun SearchTextFieldPreview() {
 private fun RecentSearchesSectionPreview() {
     RecentSearchesSection(
         recentSearchLoadState = LoadState.Available(FakeRecentSearch.items)
+    )
+}
+
+@Composable
+@Preview
+private fun TourismCitySectionPreview() {
+    TourismCitySection(
+        tourismCityLoadState = LoadState.Available(FakeCity.items)
     )
 }

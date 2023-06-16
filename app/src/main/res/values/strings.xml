@@ -12,4 +12,5 @@
     <string name="str_msg_search_hint">Cari nama atau lokasi wisata disini...</string>
     <string name="str_recent_search">Pencarian terkini</string>
     <string name="str_other">Lainnya</string>
+    <string name="str_popular_city">Kota yang populer</string>
 </resources>
